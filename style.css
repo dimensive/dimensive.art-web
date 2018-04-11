@@ -1,0 +1,11 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+}
+
+#artboard {
+    -webkit-box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
+    -moz-box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
+    box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
+}
