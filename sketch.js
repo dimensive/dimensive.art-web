@@ -47,7 +47,6 @@ function draw() {
     
     translate(width/2, width/2);
     scale(perc);
-    ellipse(0, 0, 200, 200);
 }
 
 //map(value,start1,stop1,start2,stop2,[withinBounds])
@@ -90,30 +89,39 @@ var palette = [["422ef4", "ff84a8", "ffdd8e", "ffffff"], //load these from a txt
                ["000000", "e1116a", "147dff", "ffffff"]];
 
 function genArt(g) {
-    console.log("genArt " + g);
+    console.log("Seed: " + g);
 
-    
     var gen = new Chance(g);
     
+    var leg_v = gen.integer({min: 2, max: 8}),
+        ele_v = gen.integer({min: 2, max: 10}),
+        gri_v = gen.bool(),
+        pad_v = gen.bool(),
+        siz_v = gen.bool(),
+        col_v = gen.color({format: 'hex'});
+    
+    //may not be nessecary but an obj is helpful for org
     gen.mixin({
     'artwork': function() {
         return {
-            legs: gen.integer({min: 2, max: 8}),
-            elements: gen.integer({min: 2, max: 10}),
-            grid: gen.bool(),
-            padding: gen.bool(),
-            size: gen.bool(),
-            color: gen.color({format: 'hex'})
+            legs: leg_v,
+            elements: ele_v,
+            grid: gri_v,
+            padding: pad_v,
+            size: siz_v,
+            color: col_v
         }; 
     }
     });
     
-    //gen.artwork();
+    print("legs: " + gen.artwork().legs);
+    print("legs: " + leg_v);
     print(gen.artwork());
+    //fill('red');
+    //ellipse(0, 0, 200, 200);
 }
 
 function generateHash() {
-    "use strict";
     location.hash = seededChance.hash({length: 4});
     console.log("new hash generated: " + location.hash);
     h = location.hash;
@@ -123,14 +131,12 @@ function generateHash() {
 
 //generates art based on the previous hash
 function sameHash() {
-    "use strict";
     var sHash = window.location.hash.substring(window.location.hash.lastIndexOf('#') + 1);
     genArt(sHash);
 
 }
 
 window.onload = function () {
-    "use strict";
     console.log("onLoad");
 
     if (window.location.hash.substring(window.location.hash.lastIndexOf('/') + 1).length === 0) {
@@ -142,26 +148,10 @@ window.onload = function () {
 };
 
 window.onkeyup = function (e) {
-    "use strict";
     switch (e.keyCode) {
-    case 37: //left
-        console.log("onkeyup");
-        generateHash();
-        break;
-    case 38: //up
-        console.log("onkeyup");
-        generateHash();
-        break;
-    case 39: //right
-        console.log("onkeyup");
-        generateHash();
-        break;
-    case 40: //down
-        console.log("onkeyup");
-        generateHash();
-        break;
     case 32: //space
-        console.log(hashes);
+        console.log("onkeyup");
+        generateHash();
         break;
     }
 };
