@@ -1,5 +1,7 @@
 var cnv;
 
+var colors = [];
+
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
@@ -9,7 +11,7 @@ function centerCanvas() {
 function setup() {
     
     console.log("onLoad");
-
+    
     if (window.location.hash.substring(window.location.hash.lastIndexOf('/') + 1).length === 0) {
         generateHash();
     } else {
@@ -24,8 +26,9 @@ function setup() {
         cnv = createCanvas((window.innerHeight/1.45), (window.innerHeight/1.45));
         }
     //cnv.parent('artboard');
-    cnv.id('artboard')
+    cnv.id('artboard');
     centerCanvas();
+    
 }
 
 window.onresize = function() {
@@ -44,8 +47,8 @@ window.onresize = function() {
 }
 
 function draw() {
+    //colorMode(HSL);
     background(255, 255, 255);
-    fill(col_v);
     noStroke();
     //to do: check based on biggest size, make linear scale
     
@@ -58,7 +61,13 @@ function draw() {
     translate(width/2, width/2);
     scale(perc);
     
-    ellipse(0,0,200,200);
+    fill(colors[0]);
+    ellipse(255/-2,0,225,225);
+    fill(colors[1]);
+    ellipse(255/2,0,225,225);
+    fill(colors[2]);
+    ellipse(0,0,225,225);
+    //saveCanvas(cnv,toString(location.hash),'jpg')
 }
 
 //seededChance is only used to generate the url, then those values are used for repeatable URLs and Colors, sizes, etc.
@@ -78,22 +87,37 @@ function genArt(g) {
     gri_v = gen.bool(),
     pad_v = gen.bool(),
     siz_v = gen.bool(),
-    col_v = gen.color({format: 'hex'})
     pos_v = gen.weighted(['Center', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'], [100, 10, 5, 5, 5]) ;
     
-    
+    var startHue = gen.integer({min: 0, max: 360});
+    var startSat = gen.integer({min: 40, max: 100});
+    var startLig = gen.integer({min: 0, max: 80});
+
+    var changeHue = gen.integer({min: 10, max: 100});
+    var changeSat = gen.integer({min: 15, max: 40});
+    var changeLig = gen.integer({min: 5, max: 20});
+
+    for(var i = 0; i < 3; i++) {
+      colors.push(
+        colorHsluv(
+          startHue + (i * changeHue),
+          startSat + (i * changeSat),
+          startLig + (i * changeLig)
+        )
+      )
+    }
+     
     print("legs: " + leg_v);
     print("elements: " + ele_v);
     print("grid?: " + gri_v);
     print("padding?: " + pad_v);
     print("oversized?: " + siz_v);
-    print("color: " + col_v);
+    print("color: " + colors);
     print("position: " + pos_v);
-    
 }
 
 function generateHash() {
-    location.hash = seededChance.hash({length: 4});
+    location.hash = seededChance.hash({length: 6});
     console.log("new hash generated: " + location.hash);
     h = location.hash;
     hashes.push(h);
@@ -106,11 +130,17 @@ function sameHash() {
     genArt(sHash);
 }
 
-window.onkeyup = function (e) {
+window.onkeydown = function (e) {
     switch (e.keyCode) {
     case 32: //space
         console.log("onkeyup");
+        colors = [];
         generateHash();
         break;
     }
 };
+
+function colorHsluv(h, s, l) {
+    var rgb = hsluv.hsluvToRgb([h, s, l]);
+    return color(rgb[0] * 255, rgb[1] * 255, rgb[2] * 255);
+}
