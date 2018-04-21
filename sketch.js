@@ -1,11 +1,10 @@
 var cnv;
-
 var colors = [];
 
 function centerCanvas() {
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  cnv.position(x, y);
+    var x = (windowWidth - width) / 2;
+    var y = (windowHeight - height) / 2;
+    cnv.position(x, y);
 }
 
 function setup() {
@@ -62,27 +61,32 @@ function draw() {
     scale(perc);
     
     fill(colors[0]);
+    
+    //description
+    textSize(12);
+    textAlign(RIGHT);
+    var desc = text(see_v, (width/2) + 20, (height/2) + 20);
+    
     ellipse(255/-2,0,225,225);
     fill(colors[1]);
     ellipse(255/2,0,225,225);
     fill(colors[2]);
     ellipse(0,0,225,225);
-    
+
     //saveCanvas(cnv,toString(location.hash),'jpg')
 }
 
 //seededChance is only used to generate the url, then those values are used for repeatable URLs and Colors, sizes, etc.
 var seededChance = new Chance(chance.hash({length: 3})),
     hashes = [],
-    h,
+    hs,
     latest,
     s;
 
 function genArt(g) {
-    console.log("Seed: " + g);
-
     var gen = new Chance(g);
     
+    see_v = g,
     leg_v = gen.integer({min: 2, max: 8}),
     ele_v = gen.integer({min: 2, max: 10}),
     gri_v = gen.bool(),
@@ -116,21 +120,31 @@ function genArt(g) {
         )
       )
     }
-     
+
+    //avoid super white
+    if (colors[2] == "rgba(255,255,255,1)") {
+        colors[2] = "rgba(240,240,240,1)";
+    }
+    
+    print("seed: " + see_v);
     print("legs: " + leg_v);
     print("elements: " + ele_v);
-    print("grid?: " + gri_v);
-    print("padding?: " + pad_v);
-    print("oversized?: " + siz_v);
-    print("color: " + colors);
+    print("grid: " + gri_v);
+    print("padding: " + pad_v);
+    print("oversized: " + siz_v);
+    print("color 1: " + colors[0]);
+    print("color 2: " + colors[1]);
+    print("color 3: " + colors[2]);
     print("position: " + pos_v);
+    
+    
 }
 
 function generateHash() {
-    location.hash = seededChance.hash({length: 6});
+    location.hash = seededChance.hash({length: 5});
     console.log("new hash generated: " + location.hash);
-    h = location.hash;
-    hashes.push(h);
+    hs = location.hash;
+    hashes.push(hs);
     genArt(location.hash);
 }
 
@@ -147,7 +161,6 @@ window.onkeydown = function (e) {
         colors = [];
         generateHash();
         redraw();
-        //resizeCanvas(h,h);
         break;
     }
 };

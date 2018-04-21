@@ -8,4 +8,5 @@ html, body {
     -webkit-box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
     -moz-box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
     box-shadow: 7px 7px 45px -8px rgba(0,0,0,0.24);
+    letter-spacing: 3px;
 }
