@@ -1,0 +1,85 @@
+1. open site url - ie www.dimensive.com/random 
+    a. dimensive.com could redirect to random hashed url www.dimensive.com/Ah9af
+    b. OR home page with web-app description, tut, facts and call to action (Generate New!)
+
+2.  Generated Art (see example.jpg)
+3.  Generated color pallette
+4.  CSS3 ease animation on generation
+
+5.  possibly 'heart' different artworks (with slick micro-ux transition)
+6.  order print on demand
+7.  eth/coinbase payment option
+8.  shareable URL
+
+9. tweet bot posts 3 per day + most favorited/shared/bought art of the day with link
+
+
+PRINT ON DEMAND
+===============
+when an order is submitted:
+
+Site generates jpg on server side based on hash
+combines into cmyk pdfs if made in the same 7 day span
+auto submits artwork to allegra web submission
+
+send three random prints
+
+5" and 10" variations
+-glossy
+-matte
+-linen
+
+hide hash or print on back
+
+
+PAYMENT OPTION
+==============
+accept ETH payment
+paypal
+
+
+DUE DATES
+=========
+task 1-3  due by MAY 28
+task 4 due JUNE 16
+task 5 due JUNE 23
+task 6 due JULY 19
+task 7-9 due JULY 31
+
+
+PSEUDO DESIGN
+=============
+number of legs 3-7
+number of pieces 1-5
+bool gridbased
+bool padding (see fig 3 for no padding, fig 1 w padding)
+1/8 chance of being oversized, positioned into corner
+color
+render/animate in
+
+
+COLOR
+=====
+https://programmingdesignsystems.com/color/color-models-and-color-spaces/index.html#color-models-and-color-spaces-JDQ1fRD
+
+
+Targets
+=======
+r/proceduralgeneration
+r/dataisbeautiful
+r/internetisbeautiful
+r/ethereum (showing off payment systems)
+r/coinbase (showing off payment systems)
+r/creativecoding
+
+plotter twitter
+gamedev twitter
+bot twitter
+
+
+LONG TERM
+=========
+alt modes/seasons
+
+
+

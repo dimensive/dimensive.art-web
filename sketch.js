@@ -67,6 +67,7 @@ function draw() {
     ellipse(255/2,0,225,225);
     fill(colors[2]);
     ellipse(0,0,225,225);
+    
     //saveCanvas(cnv,toString(location.hash),'jpg')
 }
 
@@ -89,15 +90,24 @@ function genArt(g) {
     siz_v = gen.bool(),
     pos_v = gen.weighted(['Center', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'], [100, 10, 5, 5, 5]) ;
     
+    
+    //monochromatic stepper (saturation++)
+    //triad (rand hue, 100 sat, 50 light)
+    
     var startHue = gen.integer({min: 0, max: 360});
-    var startSat = gen.integer({min: 40, max: 100});
-    var startLig = gen.integer({min: 0, max: 80});
+    var startSat = gen.integer({min: 50, max: 100});
+    var startLig = gen.integer({min: 30, max: 80});
 
     var changeHue = gen.integer({min: 10, max: 100});
     var changeSat = gen.integer({min: 15, max: 40});
     var changeLig = gen.integer({min: 5, max: 20});
 
     for(var i = 0; i < 3; i++) {
+        if(startHue < 80) {
+            startSat = 100;
+            startLig = 50;
+        }
+        
       colors.push(
         colorHsluv(
           startHue + (i * changeHue),
@@ -136,6 +146,8 @@ window.onkeydown = function (e) {
         console.log("onkeyup");
         colors = [];
         generateHash();
+        redraw();
+        //resizeCanvas(h,h);
         break;
     }
 };
