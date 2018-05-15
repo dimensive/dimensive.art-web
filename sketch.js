@@ -4,7 +4,7 @@ var colors = [];
 function centerCanvas() {
     var x = (windowWidth - width) / 2;
     var y = (windowHeight - height) / 2;
-    cnv.position(x, y);
+    //cnv.position(x, y);
 }
 
 function setup() {
@@ -24,32 +24,32 @@ function setup() {
     } else {
         cnv = createCanvas((window.innerHeight/1.45), (window.innerHeight/1.45));
         }
-    //cnv.parent('artboard');
+    cnv.parent('container');
     cnv.id('artboard');
-    centerCanvas();
     
+    txt = createDiv(see_v);
+    txt.style('color','colors[2]');
+    txt.id('desc');
+    txt.parent('container');
+    centerCanvas();
 }
 
 window.onresize = function() {
-    var x = (windowWidth - width) / 2;
-    var y = (windowHeight - height) / 2;
-    cnv.position(x, y);
-    
     if (window.innerHeight > window.innerWidth){
-        var h = (window.innerWidth/1.45);
+        var h = (window.innerWidth/1.2);
     } else {
-        var h = (window.innerHeight/1.45);
+        var h = (window.innerHeight/1.2);
     }
+    
+    //h,h because it needs to remain square not rectangle. Whichever is smaller (w or h) .
     resizeCanvas(h,h);
     width = h;
     height = h;
 }
 
 function draw() {
-    //colorMode(HSL);
     background(255, 255, 255);
     noStroke();
-    //to do: check based on biggest size, make linear scale
     
     if (window.innerHeight > window.innerWidth){
         var perc = map(window.innerWidth,400,displayWidth,.4,1);
@@ -63,10 +63,10 @@ function draw() {
     fill(colors[0]);
     
     //description
-    textSize(12);
-    textAlign(RIGHT);
-    var desc = text(see_v, (width/2) + 20, (height/2) + 20);
+    select('#desc').html(see_v);
+    select('#desc').style('color',colors[0]);
     
+    //DRAW PRACTICE SHAPES TO TEST COLORS
     ellipse(255/-2,0,225,225);
     fill(colors[1]);
     ellipse(255/2,0,225,225);
@@ -76,7 +76,7 @@ function draw() {
     //saveCanvas(cnv,toString(location.hash),'jpg')
 }
 
-//seededChance is only used to generate the url, then those values are used for repeatable URLs and Colors, sizes, etc.
+//seeseededChance is only used to generate the url, then those values are used for repeatable URLs and Colors, sizes, etc.
 var seededChance = new Chance(chance.hash({length: 3})),
     hashes = [],
     hs,
@@ -93,7 +93,6 @@ function genArt(g) {
     pad_v = gen.bool(),
     siz_v = gen.bool(),
     pos_v = gen.weighted(['Center', 'Top Left', 'Top Right', 'Bottom Right', 'Bottom Left'], [100, 10, 5, 5, 5]) ;
-    
     
     //monochromatic stepper (saturation++)
     //triad (rand hue, 100 sat, 50 light)
@@ -136,8 +135,6 @@ function genArt(g) {
     print("color 2: " + colors[1]);
     print("color 3: " + colors[2]);
     print("position: " + pos_v);
-    
-    
 }
 
 function generateHash() {
@@ -160,7 +157,7 @@ window.onkeydown = function (e) {
         console.log("onkeyup");
         colors = [];
         generateHash();
-        redraw();
+        //redraw();
         break;
     }
 };
