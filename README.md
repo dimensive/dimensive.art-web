@@ -1,21 +1,26 @@
-# Random Prints
+# Dimensive Art
 
-One Paragraph of project description goes here
+Di•men•sive
 
-## Getting Started
+*Without dimensions; marking dimensions or the limits.*
 
-Visit the project online at 
+Dimensive Art is an on-demand printing service for generative artwork. Browse and generate unique artwork, share it with friends, and even order a copy for your wall at home. Each piece of artwork has a unique identifier and can be reloaded online later.
+
+## Project Links
+
+Visit the project online at [dimensive.art](https://dimensive.art)
+Follow the art bot on twitter [@dimensive_art](https://twitter.com/dimensive_art)
 
 ## Built With
 
-* [p5js](https://p5js.org/) - The javascipt library used
-* [Chance](https://chancejs.com/) - The javascipt library used
+* [p5js](https://p5js.org/) - The javascipt library used for drawing objects
+* [Chance](https://chancejs.com/) - The javascipt random math library
 
 ## Authors
 
-* **Mark Kowalsky** - *Initial work* - [dimensive](https://github.com/dimensive)
+* **Mark Kowalsky** - [dimensive](https://github.com/dimensive)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+You may also find me on Twitter [@dimensive](https://twitter.com/dimensive)
 
 ## License
 
@@ -41,6 +46,7 @@ SOFTWARE.
 
 ## Acknowledgments
 
+* Allegra Printing
 * Lauren McCarthy
 * Daniel Shiffman
 * Rune Madeson
