@@ -1,25 +1,31 @@
+/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
+/*global define */
 var colors = [],
     hashes = [],
     artwork = [];
 
+var hashgenerator = new HashGenerator();
+    
+var managerSeed = new Chance(chance.hash({length: 4}));
+
 function setup() {
     console.log("onLoad");
     
-    hashgenerator = new HashGenerator();
-    
     //if there is no hash, make a new one!
     if (window.location.hash.substring(window.location.hash.lastIndexOf('/') + 1).length === 0) {
-        hashgenerator.newHash();
+        hashgenerator.newHash(managerSeed.hash({length: 5}));
     } else { //or if a user specified one, load it instead
         console.log("Linked to pre-hashed page " + location.hash);
         hashgenerator.recycleHash();
     }
     
+    var cnv;
+    
     //manage maximum canvas size
-    if (window.innerHeight > window.innerWidth){
-        cnv = createCanvas((window.innerWidth/1.45), (window.innerWidth/1.45));
+    if (window.innerHeight > window.innerWidth) {
+        cnv = createCanvas((window.innerWidth / 1.45), (window.innerWidth / 1.45));
     } else {
-        cnv = createCanvas((window.innerHeight/1.45), (window.innerHeight/1.45));
+        cnv = createCanvas((window.innerHeight / 1.45), (window.innerHeight / 1.45));
     }
     
     cnv.parent('container');
@@ -37,8 +43,7 @@ function setup() {
     
     //description
     hashgenerator.seed = location.hash;
-    select('#desc').html(hashgenerator.seed);
-    select('#desc').style('color',colors[0]);
+    updateDescription();
     
     centerCanvas();
 }
@@ -46,6 +51,7 @@ function setup() {
 function draw() {
     background(230);
     noStroke();
+    var perc;
     
     if (window.innerHeight > window.innerWidth){
         perc = map(window.innerWidth, 400, displayWidth, .4, 1);
@@ -53,7 +59,7 @@ function draw() {
         perc = map(window.innerHeight, 200, displayHeight, .4, 1);
     }
     
-    translate(width/2, width/2);
+    translate( width / 2, width / 2 );
     scale(perc);
     fill(colors[0]);
     rectMode(CENTER);
@@ -74,9 +80,9 @@ function centerCanvas() {
 //window resize detection
 window.onresize = function() {
     if (window.innerHeight > window.innerWidth) {
-        var h = (window.innerWidth/1.2);
+        var h = (window.innerWidth / 1.2);
     } else {
-        var h = (window.innerHeight/1.2);
+        var h = (window.innerHeight / 1.2);
     }
     
     //h,h because it needs to remain square not rectangle. Whichever is smaller (w or h) .
@@ -85,37 +91,40 @@ window.onresize = function() {
     height = h;
 };
 
-//space bar detect / regenerate function
+//space bar detect / reload regenerate function
 window.onkeydown = function(e) {
     switch (e.keyCode) {
     case 32: //space
         console.log("onkeyup");
         colors = [];
-        //artwork = [];
-        
-        hashgenerator.newHash();
+          
+        hashgenerator.newHash(managerSeed.hash({length: 5}));
+        updateDescription();
+            
         if (artwork != []) {
             artwork[0].display();
+            console.log(artwork[0]);
         } else {
             console.log("nothing to print!");
         }
-            
-        //console.log()
         tip.class("fade");
         break;
     }
 }
 
+function updateDescription() {
+    select('#desc').html(hashgenerator.seed);
+    select('#desc').style('color', colors[0]);
+}
+
 function addArtObject(a) {
-    artwork.push(new Artwork (chance.hash({length: 4})));
+    artwork.push(new Artwork (a));
 }
 
 function HashGenerator() {
-    
-    this.managerSeed = new Chance(chance.hash({length: 4}));
-    
-    this.newHash = function() {
-        this.hashedName = this.managerSeed.hash({length: 5});
+
+    this.newHash = function(seedyboy) {
+        this.hashedName = seedyboy;
         location.hash = this.hashedName;
         this.seed = location.hash;
         console.log("new hash generated: " + this.seed);
@@ -123,15 +132,12 @@ function HashGenerator() {
         artwork = [];
         addArtObject(this.seed);
         console.log("added: " + this.seed);
-        
-        select('#desc').html(hashgenerator.seed);
-        select('#desc').style('color',colors[0]);
     };
     
     this.recycleHash = function() {
         this.seed = window.location.hash.substring(window.location.hash.lastIndexOf('#') + 1);
-        console.log("recycled seed: " + this.seed);
-        addArtObject(this.seed);
+        console.log("recycled seed: #" + this.seed);
+        addArtObject("#" + this.seed);
     };
     
     return this.seed;
@@ -216,7 +222,6 @@ function Artwork(g) {
     };
     
     this.display = function() {
-
         for(var j = 0; j < this.rows; j++) {
             for(var k = 0; k < this.columns; k++) {
                 switch(this.shape[j]) {
