@@ -91,7 +91,7 @@ window.onresize = function () {
 window.onkeydown = function (e) {
     switch (e.keyCode) {
     case 32: //space
-        console.log("onkeyup");
+//        console.log("onkeyup");
         colors = [];
           
         hashgenerator.newHash(managerSeed.hash({length: 5}));
@@ -115,7 +115,7 @@ function updateDescription() {
 
 function addArtObject(a) {
     artwork.push(new Artwork(a));
-    console.log("added: " + this.seed);
+    console.log("added: " + hashgenerator.seed);
 }
 
 function HashGenerator() {

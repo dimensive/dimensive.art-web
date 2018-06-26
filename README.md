@@ -18,9 +18,10 @@ Follow the art bot on twitter [@dimensive_art](https://twitter.com/dimensive_art
 
 ## Authors
 
-* **Mark Kowalsky** - [dimensive](https://github.com/dimensive)
+* **Mark Kowalsky** - 
 
-You may also find me on Twitter [@dimensive](https://twitter.com/dimensive)
+Github: [dimensive](https://github.com/dimensive)
+Twitter: [@dimensive](https://twitter.com/dimensive)
 
 ## License
 
