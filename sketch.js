@@ -1,7 +1,6 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
+/*jslint sloppy: true, vars: true, plusplus: true, devel: true, indent: 4, maxerr: 100 */
 /*global define */
 var colors = [],
-    hashes = [],
     artwork = [];
 
 var hashgenerator = new HashGenerator();
@@ -19,8 +18,6 @@ function setup() {
         hashgenerator.recycleHash();
     }
     
-    var cnv;
-    
     //manage maximum canvas size
     if (window.innerHeight > window.innerWidth) {
         cnv = createCanvas((window.innerWidth / 1.45), (window.innerWidth / 1.45));
@@ -31,13 +28,13 @@ function setup() {
     cnv.parent('container');
     cnv.id('artboard');
     
-    txt = createDiv(hashgenerator.seed);
-    txt.style('color','colors[2]');
+    var txt = createDiv(hashgenerator.seed);
+    txt.style('color', 'colors[2]');
     txt.id('desc');
     txt.parent('container');
     
     tip = createDiv("press space to regenerate");
-    tip.style('color','#d9d9d9');
+    tip.style('color', '#d9d9d9');
     tip.id('tooltip');
     tip.parent('container');
     
@@ -51,15 +48,14 @@ function setup() {
 function draw() {
     background(230);
     noStroke();
-    var perc;
     
-    if (window.innerHeight > window.innerWidth){
-        perc = map(window.innerWidth, 400, displayWidth, .4, 1);
+    if (window.innerHeight > window.innerWidth) {
+        perc = map(window.innerWidth, 400, displayWidth, 0.4, 1);
     } else {
-        perc = map(window.innerHeight, 200, displayHeight, .4, 1);
+        perc = map(window.innerHeight, 200, displayHeight, 0.4, 1);
     }
     
-    translate( width / 2, width / 2 );
+    translate(width / 2, width / 2);
     scale(perc);
     fill(colors[0]);
     rectMode(CENTER);
@@ -78,21 +74,21 @@ function centerCanvas() {
 }
 
 //window resize detection
-window.onresize = function() {
+window.onresize = function () {
     if (window.innerHeight > window.innerWidth) {
-        var h = (window.innerWidth / 1.2);
+        h = (window.innerWidth / 1.2);
     } else {
-        var h = (window.innerHeight / 1.2);
+        h = (window.innerHeight / 1.2);
     }
     
     //h,h because it needs to remain square not rectangle. Whichever is smaller (w or h) .
-    resizeCanvas(h,h);
+    resizeCanvas(h, h);
     width = h;
     height = h;
 };
 
 //space bar detect / reload regenerate function
-window.onkeydown = function(e) {
+window.onkeydown = function (e) {
     switch (e.keyCode) {
     case 32: //space
         console.log("onkeyup");
@@ -101,7 +97,7 @@ window.onkeydown = function(e) {
         hashgenerator.newHash(managerSeed.hash({length: 5}));
         updateDescription();
             
-        if (artwork != []) {
+        if (artwork !== []) {
             artwork[0].display();
             console.log(artwork[0]);
         } else {
@@ -110,7 +106,7 @@ window.onkeydown = function(e) {
         tip.class("fade");
         break;
     }
-}
+};
 
 function updateDescription() {
     select('#desc').html(hashgenerator.seed);
@@ -118,26 +114,26 @@ function updateDescription() {
 }
 
 function addArtObject(a) {
-    artwork.push(new Artwork (a));
+    artwork.push(new Artwork(a));
+    console.log("added: " + this.seed);
 }
 
 function HashGenerator() {
 
-    this.newHash = function(seedyboy) {
-        this.hashedName = seedyboy;
+    this.newHash = function (se) {
+        this.hashedName = se;
         location.hash = this.hashedName;
         this.seed = location.hash;
         console.log("new hash generated: " + this.seed);
-        hashes.push(this.seed);
+//        hashes.push(this.seed);
         artwork = [];
         addArtObject(this.seed);
-        console.log("added: " + this.seed);
     };
     
-    this.recycleHash = function() {
-        this.seed = window.location.hash.substring(window.location.hash.lastIndexOf('#') + 1);
-        console.log("recycled seed: #" + this.seed);
-        addArtObject("#" + this.seed);
+    this.recycleHash = function () {
+        this.seed = window.location.hash.substring(window.location.hash.lastIndexOf('#'));
+        console.log("recycled seed: " + this.seed);
+        addArtObject(this.seed);
     };
     
     return this.seed;
